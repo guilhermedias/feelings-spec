@@ -1,4 +1,4 @@
-package solutions.moot.feelings.spec.commons;
+package me.espere.feelings.spec.commons;
 
 import org.assertj.core.api.Condition;
 

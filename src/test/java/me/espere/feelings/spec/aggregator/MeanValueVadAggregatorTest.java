@@ -1,16 +1,16 @@
-package solutions.moot.feelings.spec.aggregator;
+package me.espere.feelings.spec.aggregator;
 
 import org.junit.Before;
 import org.junit.Test;
-import solutions.moot.feelings.spec.dictionary.VadEntry;
-import solutions.moot.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.dictionary.VadEntry;
+import me.espere.feelings.spec.dictionary.VadValue;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static solutions.moot.feelings.spec.commons.Conditions.equalTo;
+import static me.espere.feelings.spec.commons.Conditions.equalTo;
 
 public class MeanValueVadAggregatorTest {
     private MeanValueVadAggregator aggregator;

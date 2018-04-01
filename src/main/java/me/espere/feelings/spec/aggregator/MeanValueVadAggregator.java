@@ -1,7 +1,7 @@
-package solutions.moot.feelings.spec.aggregator;
+package me.espere.feelings.spec.aggregator;
 
-import solutions.moot.feelings.spec.dictionary.VadEntry;
-import solutions.moot.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.dictionary.VadEntry;
+import me.espere.feelings.spec.dictionary.VadValue;
 
 import java.math.BigDecimal;
 import java.util.Collection;

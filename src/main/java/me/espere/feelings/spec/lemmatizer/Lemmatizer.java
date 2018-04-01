@@ -1,4 +1,4 @@
-package solutions.moot.feelings.spec.lemmatizer;
+package me.espere.feelings.spec.lemmatizer;
 
 import java.util.Collection;
 

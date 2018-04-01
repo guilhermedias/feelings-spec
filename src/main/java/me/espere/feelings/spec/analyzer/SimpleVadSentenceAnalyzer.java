@@ -1,10 +1,10 @@
-package solutions.moot.feelings.spec.analyzer;
+package me.espere.feelings.spec.analyzer;
 
-import solutions.moot.feelings.spec.aggregator.VadAggregator;
-import solutions.moot.feelings.spec.dictionary.VadDictionary;
-import solutions.moot.feelings.spec.dictionary.VadEntry;
-import solutions.moot.feelings.spec.dictionary.VadValue;
-import solutions.moot.feelings.spec.lemmatizer.Lemmatizer;
+import me.espere.feelings.spec.aggregator.VadAggregator;
+import me.espere.feelings.spec.dictionary.VadDictionary;
+import me.espere.feelings.spec.dictionary.VadEntry;
+import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 
 import java.util.Collection;
 import java.util.Optional;

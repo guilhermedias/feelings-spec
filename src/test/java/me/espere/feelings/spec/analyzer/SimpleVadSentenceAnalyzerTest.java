@@ -1,15 +1,16 @@
-package solutions.moot.feelings.spec.analyzer;
+package me.espere.feelings.spec.analyzer;
 
+import me.espere.feelings.spec.commons.Conditions;
+import me.espere.feelings.spec.dictionary.VadDictionary;
+import me.espere.feelings.spec.dictionary.VadEntry;
+import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import solutions.moot.feelings.spec.aggregator.VadAggregator;
-import solutions.moot.feelings.spec.dictionary.VadDictionary;
-import solutions.moot.feelings.spec.dictionary.VadEntry;
-import solutions.moot.feelings.spec.dictionary.VadValue;
-import solutions.moot.feelings.spec.lemmatizer.Lemmatizer;
+import me.espere.feelings.spec.aggregator.VadAggregator;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -18,7 +19,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static solutions.moot.feelings.spec.commons.Conditions.equalTo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleVadSentenceAnalyzerTest {
@@ -52,9 +52,9 @@ public class SimpleVadSentenceAnalyzerTest {
 
         VadValue sentenceVadValue = analyzer.analyzeSentence("");
 
-        assertThat(sentenceVadValue.getValence()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(equalTo(0.0));
+        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
     }
 
     @Test
@@ -79,9 +79,9 @@ public class SimpleVadSentenceAnalyzerTest {
 
         VadValue sentenceVadValue = analyzer.analyzeSentence("abnormal");
 
-        assertThat(sentenceVadValue.getValence()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(equalTo(0.0));
+        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
     }
 
     @Test
@@ -113,8 +113,8 @@ public class SimpleVadSentenceAnalyzerTest {
 
         VadValue sentenceVadValue = analyzer.analyzeSentence("much word");
 
-        assertThat(sentenceVadValue.getValence()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(equalTo(0.0));
+        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
     }
 }

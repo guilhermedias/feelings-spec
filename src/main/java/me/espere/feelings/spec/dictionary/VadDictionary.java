@@ -1,4 +1,4 @@
-package solutions.moot.feelings.spec.dictionary;
+package me.espere.feelings.spec.dictionary;
 
 import java.util.Optional;
 
