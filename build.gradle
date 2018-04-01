@@ -1,5 +1,7 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.0'
 }
 
 repositories {
@@ -16,6 +18,33 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.16.0'
 }
 
-jar {
-    version '0.0.1'
+version 'v0.0.1'
+
+publishing {
+    publications {
+        feelingsSpec(MavenPublication) {
+            from components.java
+            groupId 'me.espere.feelings'
+            artifactId 'feelings-spec'
+        }
+    }
+}
+
+bintray {
+    dryRun = !project.hasProperty('deploy')
+
+    user System.getenv('BINTRAY_USER')
+    key System.getenv('BINTRAY_KEY')
+
+    pkg {
+        repo = 'production'
+        name = 'feelings-spec'
+        userOrg = 'espere-me'
+
+        version {
+            name = 'v0.0.1'
+        }
+    }
+
+    publications = ['feelingsSpec']
 }
