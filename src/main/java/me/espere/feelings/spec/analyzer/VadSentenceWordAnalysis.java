@@ -3,10 +3,9 @@ package me.espere.feelings.spec.analyzer;
 import lombok.Value;
 import me.espere.feelings.spec.dictionary.VadValue;
 
-import java.util.Collection;
-
 @Value
-public class VadSentenceAnalysis {
+public class VadSentenceWordAnalysis {
+    private String word;
+    private String lemma;
     private VadValue vadValue;
-    private Collection<VadSentenceWordAnalysis> wordAnalyses;
 }

@@ -7,10 +7,9 @@ import me.espere.feelings.spec.dictionary.VadValue;
 import me.espere.feelings.spec.lemmatizer.Lemma;
 import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 public class SimpleVadSentenceAnalyzer implements VadSentenceAnalyzer {
     private Lemmatizer lemmatizer;
@@ -27,16 +26,22 @@ public class SimpleVadSentenceAnalyzer implements VadSentenceAnalyzer {
     public VadSentenceAnalysis analyzeSentence(String sentence) {
         Collection<Lemma> lemmas = lemmatizer.lemmas(sentence);
 
-        Collection<VadEntry> entries = lemmas
-                .stream()
-                .map(Lemma::getValue)
-                .map(dictionary::getEntry)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(toList());
+        Collection<VadSentenceWordAnalysis> wordAnalyses = new ArrayList<>();
 
-        VadValue vadValue = aggregator.aggregate(sentence, entries);
+        lemmas.forEach(lemma -> {
+            Optional<VadEntry> entryOptional = dictionary.getEntry(lemma.getValue());
 
-        return new VadSentenceAnalysis(vadValue, entries);
+            entryOptional.ifPresent(entry ->
+                    wordAnalyses.add(new VadSentenceWordAnalysis(
+                            lemma.getWord(),
+                            lemma.getValue(),
+                            entry.getVadValue()
+                    ))
+            );
+        });
+
+        VadValue vadValue = aggregator.aggregate(sentence, wordAnalyses);
+
+        return new VadSentenceAnalysis(vadValue, wordAnalyses);
     }
 }
