@@ -5,6 +5,7 @@ import me.espere.feelings.spec.commons.Conditions;
 import me.espere.feelings.spec.dictionary.VadDictionary;
 import me.espere.feelings.spec.dictionary.VadEntry;
 import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.lemmatizer.Lemma;
 import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,18 +64,20 @@ public class SimpleVadSentenceAnalyzerTest {
 
     @Test
     public void shouldAnalyzeSingleWordSentence() {
-        when(lemmatizer.lemmas("abnormal"))
-                .thenReturn(singletonList("abnormal"));
+        Lemma lemma = new Lemma("abnormal", "abnormal");
 
-        VadEntry wordVadEntry = new VadEntry("abnormal", new VadValue(
+        when(lemmatizer.lemmas("abnormal"))
+                .thenReturn(singletonList(lemma));
+
+        VadEntry entry = new VadEntry("abnormal", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
         ));
 
-        when(dictionary.getEntry("abnormal")).thenReturn(Optional.of(wordVadEntry));
+        when(dictionary.getEntry("abnormal")).thenReturn(Optional.of(entry));
 
-        when(aggregator.aggregate("abnormal", asList(wordVadEntry))).thenReturn(
+        when(aggregator.aggregate("abnormal", singletonList(entry))).thenReturn(
                 new VadValue(
                         BigDecimal.ZERO,
                         BigDecimal.ZERO,
@@ -88,13 +91,16 @@ public class SimpleVadSentenceAnalyzerTest {
         assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
         assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
 
-        assertThat(sentenceAnalysis.getEntries()).containsExactly(wordVadEntry);
+        assertThat(sentenceAnalysis.getEntries()).containsExactly(entry);
     }
 
     @Test
     public void shouldAnalyzeMultipleWordsSentence() {
+        Lemma lemma1 = new Lemma("much", "much");
+        Lemma lemma2 = new Lemma("word", "word");
+
         when(lemmatizer.lemmas("much word"))
-                .thenReturn(asList("much", "word"));
+                .thenReturn(asList(lemma1, lemma2));
 
         VadEntry entry1 = new VadEntry("much", new VadValue(
                 BigDecimal.ZERO,

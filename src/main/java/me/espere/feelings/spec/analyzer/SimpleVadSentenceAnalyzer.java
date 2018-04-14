@@ -4,6 +4,7 @@ import me.espere.feelings.spec.aggregator.VadAggregator;
 import me.espere.feelings.spec.dictionary.VadDictionary;
 import me.espere.feelings.spec.dictionary.VadEntry;
 import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.lemmatizer.Lemma;
 import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 
 import java.util.Collection;
@@ -24,10 +25,11 @@ public class SimpleVadSentenceAnalyzer implements VadSentenceAnalyzer {
 
     @Override
     public VadSentenceAnalysis analyzeSentence(String sentence) {
-        Collection<String> lemmas = lemmatizer.lemmas(sentence);
+        Collection<Lemma> lemmas = lemmatizer.lemmas(sentence);
 
         Collection<VadEntry> entries = lemmas
                 .stream()
+                .map(Lemma::getValue)
                 .map(dictionary::getEntry)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
