@@ -23,14 +23,18 @@ public class SimpleVadSentenceAnalyzer implements VadSentenceAnalyzer {
     }
 
     @Override
-    public VadValue analyzeSentence(String sentence) {
-        Collection<VadEntry> entries = lemmatizer.lemmas(sentence)
+    public VadSentenceAnalysis analyzeSentence(String sentence) {
+        Collection<String> lemmas = lemmatizer.lemmas(sentence);
+
+        Collection<VadEntry> entries = lemmas
                 .stream()
                 .map(dictionary::getEntry)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
 
-        return aggregator.aggregate(sentence, entries);
+        VadValue vadValue = aggregator.aggregate(sentence, entries);
+
+        return new VadSentenceAnalysis(vadValue, entries);
     }
 }
