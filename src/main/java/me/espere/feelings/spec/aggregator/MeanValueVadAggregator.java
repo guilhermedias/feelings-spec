@@ -15,6 +15,14 @@ public class MeanValueVadAggregator implements VadAggregator {
 
     @Override
     public VadValue aggregate(String sentence, Collection<VadSentenceWordAnalysis> wordAnalyses) {
+        if (wordAnalyses.isEmpty()) {
+            return new VadValue(
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO
+            );
+        }
+
         VadValue accumulatedVadValue = wordAnalyses
                 .stream()
                 .map(VadSentenceWordAnalysis::getVadValue)

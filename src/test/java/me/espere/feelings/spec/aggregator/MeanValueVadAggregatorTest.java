@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static me.espere.feelings.spec.commons.Conditions.equalTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +19,17 @@ public class MeanValueVadAggregatorTest {
     @Before
     public void setUp() {
         aggregator = new MeanValueVadAggregator();
+    }
+
+    @Test
+    public void shouldAggregateEmptySentence() {
+        Collection<VadSentenceWordAnalysis> wordAnalyses = emptyList();
+
+        VadValue aggregate = aggregator.aggregate("", wordAnalyses);
+
+        assertThat(aggregate.getValence()).is(equalTo(0.00));
+        assertThat(aggregate.getArousal()).is(equalTo(0.00));
+        assertThat(aggregate.getDominance()).is(equalTo(0.00));
     }
 
     @Test

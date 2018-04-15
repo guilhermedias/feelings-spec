@@ -17,8 +17,8 @@ public class MaxRangeVadAggregator implements VadAggregator {
     );
 
     @Override
-    public VadValue aggregate(String sentence, Collection<VadSentenceWordAnalysis> words) {
-        if (words.isEmpty()) {
+    public VadValue aggregate(String sentence, Collection<VadSentenceWordAnalysis> wordAnalyses) {
+        if (wordAnalyses.isEmpty()) {
             return new VadValue(
                     BigDecimal.ZERO,
                     BigDecimal.ZERO,
@@ -26,9 +26,9 @@ public class MaxRangeVadAggregator implements VadAggregator {
             );
         }
 
-        BigDecimal valenceMaxRange = calculateFieldMaxRange(words, VadValue::getValence);
-        BigDecimal arousalMaxRange = calculateFieldMaxRange(words, VadValue::getArousal);
-        BigDecimal dominanceMaxRange = calculateFieldMaxRange(words, VadValue::getDominance);
+        BigDecimal valenceMaxRange = calculateFieldMaxRange(wordAnalyses, VadValue::getValence);
+        BigDecimal arousalMaxRange = calculateFieldMaxRange(wordAnalyses, VadValue::getArousal);
+        BigDecimal dominanceMaxRange = calculateFieldMaxRange(wordAnalyses, VadValue::getDominance);
 
         return new VadValue(
                 valenceMaxRange,
