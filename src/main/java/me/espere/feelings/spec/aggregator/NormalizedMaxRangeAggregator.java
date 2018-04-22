@@ -33,9 +33,8 @@ public class NormalizedMaxRangeAggregator extends MaxRangeAggregator {
         BigDecimal minimum = field.apply(dictionary.getMinVadValue());
         BigDecimal maximum = field.apply(dictionary.getMaxVadValue());
 
-        BigDecimal numerator = value.subtract(minimum);
         BigDecimal denominator = maximum.subtract(minimum);
 
-        return numerator.divide(denominator, RoundingMode.HALF_UP);
+        return value.divide(denominator, RoundingMode.HALF_UP);
     }
 }
