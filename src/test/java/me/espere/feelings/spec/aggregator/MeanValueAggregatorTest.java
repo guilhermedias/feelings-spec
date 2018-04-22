@@ -1,6 +1,6 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.analyzer.WordAnalysis;
 import me.espere.feelings.spec.VadValue;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +22,8 @@ public class MeanValueAggregatorTest {
     }
 
     @Test
-    public void shouldAggregateEmptySentence() {
-        Collection<SentenceWordAnalysis> wordAnalyses = emptyList();
+    public void shouldAggregateEmptyText() {
+        Collection<WordAnalysis> wordAnalyses = emptyList();
 
         VadValue aggregate = aggregator.aggregate("", wordAnalyses);
 
@@ -34,8 +34,8 @@ public class MeanValueAggregatorTest {
 
     @Test
     public void shouldAggregateTheMeanValuesUsingNaturalRounding() {
-        Collection<SentenceWordAnalysis> wordAnalyses = asList(
-                new SentenceWordAnalysis(
+        Collection<WordAnalysis> wordAnalyses = asList(
+                new WordAnalysis(
                         "",
                         "",
                         new VadValue(
@@ -43,7 +43,7 @@ public class MeanValueAggregatorTest {
                                 BigDecimal.valueOf(3.75),
                                 BigDecimal.valueOf(6.04)
                         )),
-                new SentenceWordAnalysis(
+                new WordAnalysis(
                         "",
                         "",
                         new VadValue(

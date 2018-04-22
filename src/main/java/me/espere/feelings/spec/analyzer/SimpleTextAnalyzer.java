@@ -11,28 +11,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-public class SimpleSentenceAnalyzer implements SentenceAnalyzer {
+public class SimpleTextAnalyzer implements TextAnalyzer {
     private Lemmatizer lemmatizer;
     private Dictionary dictionary;
     private Aggregator aggregator;
 
-    public SimpleSentenceAnalyzer(Lemmatizer lemmatizer, Dictionary dictionary, Aggregator aggregator) {
+    public SimpleTextAnalyzer(Lemmatizer lemmatizer, Dictionary dictionary, Aggregator aggregator) {
         this.lemmatizer = lemmatizer;
         this.dictionary = dictionary;
         this.aggregator = aggregator;
     }
 
     @Override
-    public SentenceAnalysis analyzeSentence(String sentence) {
-        Collection<Lemma> lemmas = lemmatizer.lemmas(sentence);
+    public TextAnalysis analyzeText(String text) {
+        Collection<Lemma> lemmas = lemmatizer.lemmas(text);
 
-        Collection<SentenceWordAnalysis> wordAnalyses = new ArrayList<>();
+        Collection<WordAnalysis> wordAnalyses = new ArrayList<>();
 
         lemmas.forEach(lemma -> {
             Optional<Entry> entryOptional = dictionary.getEntry(lemma.getValue());
 
             entryOptional.ifPresent(entry ->
-                    wordAnalyses.add(new SentenceWordAnalysis(
+                    wordAnalyses.add(new WordAnalysis(
                             lemma.getWord(),
                             lemma.getValue(),
                             entry.getVadValue()
@@ -40,8 +40,8 @@ public class SimpleSentenceAnalyzer implements SentenceAnalyzer {
             );
         });
 
-        VadValue vadValue = aggregator.aggregate(sentence, wordAnalyses);
+        VadValue vadValue = aggregator.aggregate(text, wordAnalyses);
 
-        return new SentenceAnalysis(vadValue, wordAnalyses);
+        return new TextAnalysis(vadValue, wordAnalyses);
     }
 }

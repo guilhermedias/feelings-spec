@@ -1,6 +1,6 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.analyzer.WordAnalysis;
 import me.espere.feelings.spec.VadValue;
 
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class MaxRangeAggregator implements Aggregator {
     );
 
     @Override
-    public VadValue aggregate(String sentence, Collection<SentenceWordAnalysis> wordAnalyses) {
+    public VadValue aggregate(String text, Collection<WordAnalysis> wordAnalyses) {
         if (wordAnalyses.isEmpty()) {
             return new VadValue(
                     BigDecimal.ZERO,
@@ -37,7 +37,7 @@ public class MaxRangeAggregator implements Aggregator {
         );
     }
 
-    private BigDecimal calculateFieldMaxRange(Collection<SentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMaxRange(Collection<WordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal fieldMinValue = calculateFieldMinValue(words, field);
         BigDecimal fieldMaxValue = calculateFieldMaxValue(words, field);
@@ -45,11 +45,11 @@ public class MaxRangeAggregator implements Aggregator {
         return fieldMaxValue.subtract(fieldMinValue);
     }
 
-    private BigDecimal calculateFieldMinValue(Collection<SentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMinValue(Collection<WordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal wordsFieldMinimum = words
                 .stream()
-                .map(SentenceWordAnalysis::getVadValue)
+                .map(WordAnalysis::getVadValue)
                 .min(comparing(field))
                 .map(field)
                 .orElse(BigDecimal.ZERO);
@@ -57,11 +57,11 @@ public class MaxRangeAggregator implements Aggregator {
         return wordsFieldMinimum.min(field.apply(MEAN_VAD_VALUE));
     }
 
-    private BigDecimal calculateFieldMaxValue(Collection<SentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMaxValue(Collection<WordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal wordsFieldMaximum = words
                 .stream()
-                .map(SentenceWordAnalysis::getVadValue)
+                .map(WordAnalysis::getVadValue)
                 .max(comparing(field))
                 .map(field)
                 .orElse(BigDecimal.ZERO);

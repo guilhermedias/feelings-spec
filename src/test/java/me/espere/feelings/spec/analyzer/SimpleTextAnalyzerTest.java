@@ -1,10 +1,10 @@
 package me.espere.feelings.spec.analyzer;
 
+import me.espere.feelings.spec.VadValue;
 import me.espere.feelings.spec.aggregator.Aggregator;
 import me.espere.feelings.spec.commons.Conditions;
 import me.espere.feelings.spec.dictionary.Dictionary;
 import me.espere.feelings.spec.dictionary.Entry;
-import me.espere.feelings.spec.VadValue;
 import me.espere.feelings.spec.lemmatizer.Lemma;
 import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 import org.junit.Before;
@@ -23,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleSentenceAnalyzerTest {
-    private SimpleSentenceAnalyzer analyzer;
+public class SimpleTextAnalyzerTest {
+    private SimpleTextAnalyzer analyzer;
 
     @Mock
     private Lemmatizer lemmatizer;
@@ -37,11 +37,11 @@ public class SimpleSentenceAnalyzerTest {
 
     @Before
     public void setUp() {
-        analyzer = new SimpleSentenceAnalyzer(lemmatizer, dictionary, aggregator);
+        analyzer = new SimpleTextAnalyzer(lemmatizer, dictionary, aggregator);
     }
 
     @Test
-    public void shouldAnalyzeEmptySentence() {
+    public void shouldAnalyzeEmptyText() {
         when(lemmatizer.lemmas(""))
                 .thenReturn(emptyList());
 
@@ -52,18 +52,18 @@ public class SimpleSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("");
+        TextAnalysis textAnalysis = analyzer.analyzeText("");
 
-        VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
-        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
+        VadValue textVadValue = textAnalysis.getVadValue();
+        assertThat(textVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getDominance()).is(Conditions.equalTo(0.0));
 
-        assertThat(sentenceAnalysis.getWordAnalyses()).isEmpty();
+        assertThat(textAnalysis.getWordAnalyses()).isEmpty();
     }
 
     @Test
-    public void shouldAnalyzeSingleWordSentence() {
+    public void shouldAnalyzeSingleWordText() {
         when(lemmatizer.lemmas("abnormal"))
                 .thenReturn(singletonList(new Lemma("abnormal", "abnormal")));
 
@@ -77,7 +77,7 @@ public class SimpleSentenceAnalyzerTest {
         when(dictionary.getEntry("abnormal"))
                 .thenReturn(Optional.of(entry));
 
-        SentenceWordAnalysis wordAnalysis = new SentenceWordAnalysis("abnormal", "abnormal", new VadValue(
+        WordAnalysis wordAnalysis = new WordAnalysis("abnormal", "abnormal", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -90,15 +90,15 @@ public class SimpleSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("abnormal");
+        TextAnalysis textAnalysis = analyzer.analyzeText("abnormal");
 
-        VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
-        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
+        VadValue textVadValue = textAnalysis.getVadValue();
+        assertThat(textVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getDominance()).is(Conditions.equalTo(0.0));
 
-        assertThat(sentenceAnalysis.getWordAnalyses())
-                .containsExactly(new SentenceWordAnalysis("abnormal", "abnormal", new VadValue(
+        assertThat(textAnalysis.getWordAnalyses())
+                .containsExactly(new WordAnalysis("abnormal", "abnormal", new VadValue(
                         BigDecimal.ZERO,
                         BigDecimal.ZERO,
                         BigDecimal.ZERO
@@ -106,7 +106,7 @@ public class SimpleSentenceAnalyzerTest {
     }
 
     @Test
-    public void shouldAnalyzeMultipleWordsSentence() {
+    public void shouldAnalyzeMultipleWordsText() {
         when(lemmatizer.lemmas("much word"))
                 .thenReturn(asList(new Lemma("much", "much"), new Lemma("word", "word")));
 
@@ -125,13 +125,13 @@ public class SimpleSentenceAnalyzerTest {
         when(dictionary.getEntry("much")).thenReturn(Optional.of(entry1));
         when(dictionary.getEntry("word")).thenReturn(Optional.of(entry2));
 
-        SentenceWordAnalysis wordAnalysis1 = new SentenceWordAnalysis("much", "much", new VadValue(
+        WordAnalysis wordAnalysis1 = new WordAnalysis("much", "much", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
         ));
 
-        SentenceWordAnalysis wordAnalysis2 = new SentenceWordAnalysis("word", "word", new VadValue(
+        WordAnalysis wordAnalysis2 = new WordAnalysis("word", "word", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -144,21 +144,21 @@ public class SimpleSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("much word");
+        TextAnalysis textAnalysis = analyzer.analyzeText("much word");
 
-        VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
-        assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getArousal()).is(Conditions.equalTo(0.0));
-        assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
+        VadValue textVadValue = textAnalysis.getVadValue();
+        assertThat(textVadValue.getValence()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getArousal()).is(Conditions.equalTo(0.0));
+        assertThat(textVadValue.getDominance()).is(Conditions.equalTo(0.0));
 
-        assertThat(sentenceAnalysis.getWordAnalyses())
+        assertThat(textAnalysis.getWordAnalyses())
                 .containsExactly(
-                        new SentenceWordAnalysis("much", "much", new VadValue(
+                        new WordAnalysis("much", "much", new VadValue(
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO
                         )),
-                        new SentenceWordAnalysis("word", "word", new VadValue(
+                        new WordAnalysis("word", "word", new VadValue(
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO
