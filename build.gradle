@@ -18,8 +18,6 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.16.0'
 }
 
-version 'v0.0.2'
-
 publishing {
     publications {
         feelingsSpec(MavenPublication) {
@@ -42,9 +40,28 @@ bintray {
         userOrg = 'espere-me'
 
         version {
-            name = 'v0.0.2'
+            name = project.property('version')
         }
     }
 
     publications = ['feelingsSpec']
+
+    publish = true
 }
+
+task checkVersion {
+    description 'This task fails the build if the version property is not set'
+
+    doLast {
+        if (project.property('version') == 'unspecified') {
+            throw new GradleException('You must specify a version property')
+        }
+    }
+}
+
+tasks.bintrayUpload.dependsOn checkVersion
+tasks.bintrayUpload.dependsOn clean
+tasks.bintrayUpload.dependsOn build
+
+clean.mustRunAfter checkVersion
+build.mustRunAfter clean
