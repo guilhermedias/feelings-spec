@@ -11,7 +11,7 @@ import java.util.function.Function;
 import static java.util.Comparator.comparing;
 
 public class MaxRangeAggregator implements Aggregator {
-    private Dictionary dictionary;
+    protected Dictionary dictionary;
 
     public MaxRangeAggregator(Dictionary dictionary) {
         this.dictionary = dictionary;

@@ -8,4 +8,8 @@ public interface Dictionary {
     Optional<Entry> getEntry(String word);
 
     VadValue getMeanVadValue();
+
+    VadValue getMinVadValue();
+
+    VadValue getMaxVadValue();
 }
