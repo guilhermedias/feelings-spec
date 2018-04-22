@@ -1,7 +1,8 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.WordAnalysis;
 import me.espere.feelings.spec.VadValue;
+import me.espere.feelings.spec.analyzer.WordAnalysis;
+import me.espere.feelings.spec.dictionary.Dictionary;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -10,11 +11,11 @@ import java.util.function.Function;
 import static java.util.Comparator.comparing;
 
 public class MaxRangeAggregator implements Aggregator {
-    private static final VadValue MEAN_VAD_VALUE = new VadValue(
-            BigDecimal.valueOf(5.06),
-            BigDecimal.valueOf(4.21),
-            BigDecimal.valueOf(5.18)
-    );
+    private Dictionary dictionary;
+
+    public MaxRangeAggregator(Dictionary dictionary) {
+        this.dictionary = dictionary;
+    }
 
     @Override
     public VadValue aggregate(String text, Collection<WordAnalysis> wordAnalyses) {
@@ -54,7 +55,7 @@ public class MaxRangeAggregator implements Aggregator {
                 .map(field)
                 .orElse(BigDecimal.ZERO);
 
-        return wordsFieldMinimum.min(field.apply(MEAN_VAD_VALUE));
+        return wordsFieldMinimum.min(field.apply(dictionary.getMeanVadValue()));
     }
 
     private BigDecimal calculateFieldMaxValue(Collection<WordAnalysis> words,
@@ -66,6 +67,6 @@ public class MaxRangeAggregator implements Aggregator {
                 .map(field)
                 .orElse(BigDecimal.ZERO);
 
-        return wordsFieldMaximum.max(field.apply(MEAN_VAD_VALUE));
+        return wordsFieldMaximum.max(field.apply(dictionary.getMeanVadValue()));
     }
 }

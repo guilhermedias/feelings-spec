@@ -1,9 +1,13 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.WordAnalysis;
 import me.espere.feelings.spec.VadValue;
+import me.espere.feelings.spec.analyzer.WordAnalysis;
+import me.espere.feelings.spec.dictionary.Dictionary;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -12,13 +16,25 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static me.espere.feelings.spec.commons.Conditions.equalTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MaxRangeAggregatorTest {
     private Aggregator aggregator;
 
+    @Mock
+    private Dictionary dictionary;
+
     @Before
     public void setUp() {
-        aggregator = new MaxRangeAggregator();
+        aggregator = new MaxRangeAggregator(dictionary);
+
+        when(dictionary.getMeanVadValue())
+                .thenReturn(new VadValue(
+                        BigDecimal.valueOf(5.06),
+                        BigDecimal.valueOf(4.21),
+                        BigDecimal.valueOf(5.18)
+                ));
     }
 
     @Test
