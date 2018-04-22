@@ -1,7 +1,7 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.VadSentenceWordAnalysis;
-import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.VadValue;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import static java.util.Comparator.comparing;
 
-public class MaxRangeVadAggregator implements VadAggregator {
+public class MaxRangeAggregator implements Aggregator {
     private static final VadValue MEAN_VAD_VALUE = new VadValue(
             BigDecimal.valueOf(5.06),
             BigDecimal.valueOf(4.21),
@@ -17,7 +17,7 @@ public class MaxRangeVadAggregator implements VadAggregator {
     );
 
     @Override
-    public VadValue aggregate(String sentence, Collection<VadSentenceWordAnalysis> wordAnalyses) {
+    public VadValue aggregate(String sentence, Collection<SentenceWordAnalysis> wordAnalyses) {
         if (wordAnalyses.isEmpty()) {
             return new VadValue(
                     BigDecimal.ZERO,
@@ -37,7 +37,7 @@ public class MaxRangeVadAggregator implements VadAggregator {
         );
     }
 
-    private BigDecimal calculateFieldMaxRange(Collection<VadSentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMaxRange(Collection<SentenceWordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal fieldMinValue = calculateFieldMinValue(words, field);
         BigDecimal fieldMaxValue = calculateFieldMaxValue(words, field);
@@ -45,11 +45,11 @@ public class MaxRangeVadAggregator implements VadAggregator {
         return fieldMaxValue.subtract(fieldMinValue);
     }
 
-    private BigDecimal calculateFieldMinValue(Collection<VadSentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMinValue(Collection<SentenceWordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal wordsFieldMinimum = words
                 .stream()
-                .map(VadSentenceWordAnalysis::getVadValue)
+                .map(SentenceWordAnalysis::getVadValue)
                 .min(comparing(field))
                 .map(field)
                 .orElse(BigDecimal.ZERO);
@@ -57,11 +57,11 @@ public class MaxRangeVadAggregator implements VadAggregator {
         return wordsFieldMinimum.min(field.apply(MEAN_VAD_VALUE));
     }
 
-    private BigDecimal calculateFieldMaxValue(Collection<VadSentenceWordAnalysis> words,
+    private BigDecimal calculateFieldMaxValue(Collection<SentenceWordAnalysis> words,
                                               Function<VadValue, BigDecimal> field) {
         BigDecimal wordsFieldMaximum = words
                 .stream()
-                .map(VadSentenceWordAnalysis::getVadValue)
+                .map(SentenceWordAnalysis::getVadValue)
                 .max(comparing(field))
                 .map(field)
                 .orElse(BigDecimal.ZERO);

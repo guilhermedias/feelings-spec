@@ -1,10 +1,10 @@
 package me.espere.feelings.spec.analyzer;
 
-import me.espere.feelings.spec.aggregator.VadAggregator;
+import me.espere.feelings.spec.aggregator.Aggregator;
 import me.espere.feelings.spec.commons.Conditions;
-import me.espere.feelings.spec.dictionary.VadDictionary;
-import me.espere.feelings.spec.dictionary.VadEntry;
-import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.dictionary.Dictionary;
+import me.espere.feelings.spec.dictionary.Entry;
+import me.espere.feelings.spec.VadValue;
 import me.espere.feelings.spec.lemmatizer.Lemma;
 import me.espere.feelings.spec.lemmatizer.Lemmatizer;
 import org.junit.Before;
@@ -23,21 +23,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleVadSentenceAnalyzerTest {
-    private SimpleVadSentenceAnalyzer analyzer;
+public class SimpleSentenceAnalyzerTest {
+    private SimpleSentenceAnalyzer analyzer;
 
     @Mock
     private Lemmatizer lemmatizer;
 
     @Mock
-    private VadDictionary dictionary;
+    private Dictionary dictionary;
 
     @Mock
-    private VadAggregator aggregator;
+    private Aggregator aggregator;
 
     @Before
     public void setUp() {
-        analyzer = new SimpleVadSentenceAnalyzer(lemmatizer, dictionary, aggregator);
+        analyzer = new SimpleSentenceAnalyzer(lemmatizer, dictionary, aggregator);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class SimpleVadSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        VadSentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("");
+        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("");
 
         VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
         assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
@@ -68,7 +68,7 @@ public class SimpleVadSentenceAnalyzerTest {
                 .thenReturn(singletonList(new Lemma("abnormal", "abnormal")));
 
 
-        VadEntry entry = new VadEntry("abnormal", new VadValue(
+        Entry entry = new Entry("abnormal", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -77,7 +77,7 @@ public class SimpleVadSentenceAnalyzerTest {
         when(dictionary.getEntry("abnormal"))
                 .thenReturn(Optional.of(entry));
 
-        VadSentenceWordAnalysis wordAnalysis = new VadSentenceWordAnalysis("abnormal", "abnormal", new VadValue(
+        SentenceWordAnalysis wordAnalysis = new SentenceWordAnalysis("abnormal", "abnormal", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -90,7 +90,7 @@ public class SimpleVadSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        VadSentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("abnormal");
+        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("abnormal");
 
         VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
         assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
@@ -98,7 +98,7 @@ public class SimpleVadSentenceAnalyzerTest {
         assertThat(sentenceVadValue.getDominance()).is(Conditions.equalTo(0.0));
 
         assertThat(sentenceAnalysis.getWordAnalyses())
-                .containsExactly(new VadSentenceWordAnalysis("abnormal", "abnormal", new VadValue(
+                .containsExactly(new SentenceWordAnalysis("abnormal", "abnormal", new VadValue(
                         BigDecimal.ZERO,
                         BigDecimal.ZERO,
                         BigDecimal.ZERO
@@ -110,13 +110,13 @@ public class SimpleVadSentenceAnalyzerTest {
         when(lemmatizer.lemmas("much word"))
                 .thenReturn(asList(new Lemma("much", "much"), new Lemma("word", "word")));
 
-        VadEntry entry1 = new VadEntry("much", new VadValue(
+        Entry entry1 = new Entry("much", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
         ));
 
-        VadEntry entry2 = new VadEntry("word", new VadValue(
+        Entry entry2 = new Entry("word", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -125,13 +125,13 @@ public class SimpleVadSentenceAnalyzerTest {
         when(dictionary.getEntry("much")).thenReturn(Optional.of(entry1));
         when(dictionary.getEntry("word")).thenReturn(Optional.of(entry2));
 
-        VadSentenceWordAnalysis wordAnalysis1 = new VadSentenceWordAnalysis("much", "much", new VadValue(
+        SentenceWordAnalysis wordAnalysis1 = new SentenceWordAnalysis("much", "much", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
         ));
 
-        VadSentenceWordAnalysis wordAnalysis2 = new VadSentenceWordAnalysis("word", "word", new VadValue(
+        SentenceWordAnalysis wordAnalysis2 = new SentenceWordAnalysis("word", "word", new VadValue(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO
@@ -144,7 +144,7 @@ public class SimpleVadSentenceAnalyzerTest {
                         BigDecimal.ZERO
                 ));
 
-        VadSentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("much word");
+        SentenceAnalysis sentenceAnalysis = analyzer.analyzeSentence("much word");
 
         VadValue sentenceVadValue = sentenceAnalysis.getVadValue();
         assertThat(sentenceVadValue.getValence()).is(Conditions.equalTo(0.0));
@@ -153,12 +153,12 @@ public class SimpleVadSentenceAnalyzerTest {
 
         assertThat(sentenceAnalysis.getWordAnalyses())
                 .containsExactly(
-                        new VadSentenceWordAnalysis("much", "much", new VadValue(
+                        new SentenceWordAnalysis("much", "much", new VadValue(
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO
                         )),
-                        new VadSentenceWordAnalysis("word", "word", new VadValue(
+                        new SentenceWordAnalysis("word", "word", new VadValue(
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO,
                                 BigDecimal.ZERO

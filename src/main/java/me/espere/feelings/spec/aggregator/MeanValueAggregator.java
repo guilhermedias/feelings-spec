@@ -1,12 +1,12 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.VadSentenceWordAnalysis;
-import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.VadValue;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 
-public class MeanValueVadAggregator implements VadAggregator {
+public class MeanValueAggregator implements Aggregator {
     private static final VadValue INITIAL_VALUE = new VadValue(
             BigDecimal.ZERO,
             BigDecimal.ZERO,
@@ -14,7 +14,7 @@ public class MeanValueVadAggregator implements VadAggregator {
     );
 
     @Override
-    public VadValue aggregate(String sentence, Collection<VadSentenceWordAnalysis> wordAnalyses) {
+    public VadValue aggregate(String sentence, Collection<SentenceWordAnalysis> wordAnalyses) {
         if (wordAnalyses.isEmpty()) {
             return new VadValue(
                     BigDecimal.ZERO,
@@ -25,7 +25,7 @@ public class MeanValueVadAggregator implements VadAggregator {
 
         VadValue accumulatedVadValue = wordAnalyses
                 .stream()
-                .map(VadSentenceWordAnalysis::getVadValue)
+                .map(SentenceWordAnalysis::getVadValue)
                 .reduce(INITIAL_VALUE, (a, b) -> new VadValue(
                         a.getValence().add(b.getValence()),
                         a.getArousal().add(b.getArousal()),

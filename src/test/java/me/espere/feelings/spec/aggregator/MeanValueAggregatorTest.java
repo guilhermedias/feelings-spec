@@ -1,7 +1,7 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.VadSentenceWordAnalysis;
-import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.VadValue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,17 +13,17 @@ import static java.util.Collections.emptyList;
 import static me.espere.feelings.spec.commons.Conditions.equalTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MeanValueVadAggregatorTest {
-    private MeanValueVadAggregator aggregator;
+public class MeanValueAggregatorTest {
+    private MeanValueAggregator aggregator;
 
     @Before
     public void setUp() {
-        aggregator = new MeanValueVadAggregator();
+        aggregator = new MeanValueAggregator();
     }
 
     @Test
     public void shouldAggregateEmptySentence() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = emptyList();
+        Collection<SentenceWordAnalysis> wordAnalyses = emptyList();
 
         VadValue aggregate = aggregator.aggregate("", wordAnalyses);
 
@@ -34,8 +34,8 @@ public class MeanValueVadAggregatorTest {
 
     @Test
     public void shouldAggregateTheMeanValuesUsingNaturalRounding() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = asList(
-                new VadSentenceWordAnalysis(
+        Collection<SentenceWordAnalysis> wordAnalyses = asList(
+                new SentenceWordAnalysis(
                         "",
                         "",
                         new VadValue(
@@ -43,7 +43,7 @@ public class MeanValueVadAggregatorTest {
                                 BigDecimal.valueOf(3.75),
                                 BigDecimal.valueOf(6.04)
                         )),
-                new VadSentenceWordAnalysis(
+                new SentenceWordAnalysis(
                         "",
                         "",
                         new VadValue(

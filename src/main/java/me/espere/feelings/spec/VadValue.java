@@ -1,4 +1,4 @@
-package me.espere.feelings.spec.dictionary;
+package me.espere.feelings.spec;
 
 import lombok.Value;
 

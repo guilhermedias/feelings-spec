@@ -1,7 +1,7 @@
 package me.espere.feelings.spec.aggregator;
 
-import me.espere.feelings.spec.analyzer.VadSentenceWordAnalysis;
-import me.espere.feelings.spec.dictionary.VadValue;
+import me.espere.feelings.spec.analyzer.SentenceWordAnalysis;
+import me.espere.feelings.spec.VadValue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,17 +13,17 @@ import static java.util.Collections.emptyList;
 import static me.espere.feelings.spec.commons.Conditions.equalTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MaxRangeVadAggregatorTest {
-    private VadAggregator aggregator;
+public class MaxRangeAggregatorTest {
+    private Aggregator aggregator;
 
     @Before
     public void setUp() {
-        aggregator = new MaxRangeVadAggregator();
+        aggregator = new MaxRangeAggregator();
     }
 
     @Test
     public void shouldAggregateEmptySentences() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = emptyList();
+        Collection<SentenceWordAnalysis> wordAnalyses = emptyList();
 
         VadValue aggregate = aggregator.aggregate("", wordAnalyses);
 
@@ -34,18 +34,18 @@ public class MaxRangeVadAggregatorTest {
 
     @Test
     public void shouldAggregateTheMaximumRange() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = asList(
-                new VadSentenceWordAnalysis("", "", new VadValue(
+        Collection<SentenceWordAnalysis> wordAnalyses = asList(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(2.28),
                         BigDecimal.valueOf(6.24),
                         BigDecimal.valueOf(5.82)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(5.56),
                         BigDecimal.valueOf(1.92),
                         BigDecimal.valueOf(6.36)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(7.06),
                         BigDecimal.valueOf(4.95),
                         BigDecimal.valueOf(3.44)
@@ -61,18 +61,18 @@ public class MaxRangeVadAggregatorTest {
 
     @Test
     public void shouldUseDictionaryMeanValueWhenWordsMinimumIsAboveAverage() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = asList(
-                new VadSentenceWordAnalysis("", "", new VadValue(
+        Collection<SentenceWordAnalysis> wordAnalyses = asList(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(5.15),
                         BigDecimal.valueOf(6.24),
                         BigDecimal.valueOf(5.82)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(5.56),
                         BigDecimal.valueOf(4.78),
                         BigDecimal.valueOf(6.36)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(7.06),
                         BigDecimal.valueOf(4.95),
                         BigDecimal.valueOf(5.54)
@@ -88,18 +88,18 @@ public class MaxRangeVadAggregatorTest {
 
     @Test
     public void shouldUseDictionaryMeanValueWhenWordsMaximumIsBelowAverage() {
-        Collection<VadSentenceWordAnalysis> wordAnalyses = asList(
-                new VadSentenceWordAnalysis("", "", new VadValue(
+        Collection<SentenceWordAnalysis> wordAnalyses = asList(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(2.28),
                         BigDecimal.valueOf(4.12),
                         BigDecimal.valueOf(4.82)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(4.56),
                         BigDecimal.valueOf(1.92),
                         BigDecimal.valueOf(5.14)
                 )),
-                new VadSentenceWordAnalysis("", "", new VadValue(
+                new SentenceWordAnalysis("", "", new VadValue(
                         BigDecimal.valueOf(5.02),
                         BigDecimal.valueOf(3.95),
                         BigDecimal.valueOf(3.44)
