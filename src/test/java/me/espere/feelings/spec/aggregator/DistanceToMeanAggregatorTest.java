@@ -37,6 +37,7 @@ public class DistanceToMeanAggregatorTest {
                 ));
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void shouldAggregateEmptyText() {
         Collection<WordAnalysis> wordAnalyses = emptyList();

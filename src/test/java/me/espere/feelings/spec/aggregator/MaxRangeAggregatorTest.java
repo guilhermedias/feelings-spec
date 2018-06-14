@@ -37,6 +37,7 @@ public class MaxRangeAggregatorTest {
                 ));
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void shouldAggregateEmptyText() {
         Collection<WordAnalysis> wordAnalyses = emptyList();

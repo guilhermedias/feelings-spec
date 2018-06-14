@@ -21,6 +21,7 @@ public class MeanValueAggregatorTest {
         aggregator = new MeanValueAggregator();
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void shouldAggregateEmptyText() {
         Collection<WordAnalysis> wordAnalyses = emptyList();

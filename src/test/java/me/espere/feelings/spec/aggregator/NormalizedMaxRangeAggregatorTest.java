@@ -51,6 +51,7 @@ public class NormalizedMaxRangeAggregatorTest {
                 ));
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void shouldAggregateEmptyText() {
         Collection<WordAnalysis> wordAnalyses = emptyList();
